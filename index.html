@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@300&display=swap" rel="stylesheet">
+    <title>VEATHER240</title>
+</head>
+<body>
+<header>
+    <h1>VEATHER240</h1>
+    <button class="refresh-button" id="desktop-button" onclick="getLocation()">REFRESH</button>
+    <button class="refresh-button" id="mobile-button" onclick="getLocation()">
+        <img src="https://www.pngrepo.com/png/57225/512/refresh-button.png" alt="refresh">
+    </button>
+</header>
+<main>
+    <section class="city-card"></section>
+    <template id="main_card">
+        <section class="city-weather-short">
+            <h2 class="city-title-big"></h2>
+            <div class="weather-icon-and-temperature">
+                <img class="weather-icon" src="" alt="weather icon">
+                <span class="temperature"></span>
+            </div>
+        </section>
+        <ul class="weather-info-list">
+            <li class="feels-like">
+                <span class="weather-item-title">Feels Like</span>
+                <span class="weather-item-value"></span>
+            </li>
+            <li class="wind">
+                <span class="weather-item-title">Wind</span>
+                <span class="weather-item-value"></span>
+            </li>
+            <li class="cloudiness">
+                <span class="weather-item-title">Сloudiness</span>
+                <span class="weather-item-value"></span>
+            </li>
+            <li class="pressure">
+                <span class="weather-item-title">Pressure</span>
+                <span class="weather-item-value"></span>
+            </li>
+            <li class="humidity">
+                <span class="weather-item-title">Humidity</span>
+                <span class="weather-item-value"></span>
+            </li>
+            <li class="coordinates">
+                <span class="weather-item-title">Coordinates</span>
+                <span class="weather-item-value"></span>
+            </li>
+        </ul>
+    </template>
+    <section class="favourites-menu">
+        <h2 class="favourites">Favourites</h2>
+        <form class="add-city">
+            <div>
+                <label class="edit-text">
+                    <input type="text" placeholder="Add new city" oninput="hideWarning()">
+                </label>
+                <span class="warning"></span>
+            </div>
+            <button class="add-city-button">+</button>
+        </form>
+    </section>
+    <ul class="other-cities">
+        <template id="template_card">
+            <div class="window-header">
+                <div>
+                    <h3 class="city-title"></h3>
+                    <span class="small-temperature"></span>
+                    <img src="" alt="weather icon">
+                </div>
+                <button class="delete-city-button" onclick="removeCityWindow(this)">×</button>
+            </div>
+            <ul class="weather-info-list">
+                <li class="feels-like">
+                    <span class="weather-item-title">Feels Like</span>
+                    <span class="weather-item-value"></span>
+                </li>
+                <li class="wind">
+                    <span class="weather-item-title">Wind</span>
+                    <span class="weather-item-value"></span>
+                </li>
+                <li class="cloudiness">
+                    <span class="weather-item-title">Сloudiness</span>
+                    <span class="weather-item-value"></span>
+                </li>
+                <li class="pressure">
+                    <span class="weather-item-title">Pressure</span>
+                    <span class="weather-item-value"></span>
+                </li>
+                <li class="humidity">
+                    <span class="weather-item-title">Humidity</span>
+                    <span class="weather-item-value"></span>
+                </li>
+                <li class="coordinates">
+                    <span class="weather-item-title">Coordinates</span>
+                    <span class="weather-item-value"></span>
+                </li>
+            </ul>
+        </template>
+    </ul>
+</main>
+<footer>
+    <img src="img/volvo_240.png" alt="volvo">
+</footer>
+<script src="js/script.js"></script>
+<script src="js/model.js"></script>
+<script src="js/apiRequest.js"></script>
+<script src="js/presenter.js"></script>
+</body>
+</html>
