@@ -3,7 +3,8 @@ class City {
     country;
     temperature;
     feelsLike;
-    wind;
+    windDirection;
+    windSpeed;
     cloudiness;
     pressure;
     humidity;
@@ -16,7 +17,8 @@ class City {
             "country: " + this.country + "\n" +
             "temperature: " + this.temperature + "\n" +
             "feels like: " + this.feelsLike + "\n" +
-            "wind: " + this.wind + "\n" +
+            "wind degree: " + this.windDirection + "\n" +
+            "wind speed: " + this.windSpeed + "\n" +
             "cloudiness: " + this.cloudiness + "\n" +
             "pressure: " + this.pressure + "\n" +
             "humidity: " + this.humidity + "\n" +
@@ -31,7 +33,8 @@ class City {
         city.country = cityJson.sys.country;
         city.temperature = Math.round(cityJson.main.temp);
         city.feelsLike = Math.round(cityJson.main.feels_like);
-        city.wind = `${this.getWindDirection(cityJson.wind.deg)}, ${cityJson.wind.speed}`;
+        city.windDirection = this.getWindDirection(cityJson.wind.deg);
+        city.windSpeed = cityJson.wind.speed;
         city.cloudiness = cityJson.weather[0].description;
         city.pressure = cityJson.main.pressure;
         city.humidity = cityJson.main.humidity;

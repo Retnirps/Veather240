@@ -116,7 +116,7 @@ function fillValues(template, city) {
     let coordinates = template.querySelector(".coordinates .weather-item-value");
 
     feelsLike.textContent = `${city.feelsLike}°C`;
-    wind.textContent = `${city.wind} m/s`;
+    wind.textContent = `${city.windDirection}, ${city.windSpeed} m/s`;
     cloudiness.textContent = city.cloudiness;
     pressure.textContent = `${city.pressure} hpa`;
     humidity.textContent = `${city.humidity}%`;
