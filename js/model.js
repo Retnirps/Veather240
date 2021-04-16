@@ -30,46 +30,18 @@ class City {
     static buildModelFromJson(cityJson) {
         let city = new City();
         city.name = cityJson.name;
-        city.country = cityJson.sys.country;
-        city.temperature = Math.round(cityJson.main.temp);
-        city.feelsLike = Math.round(cityJson.main.feels_like);
-        city.windDirection = this.getWindDirection(cityJson.wind.deg);
-        city.windSpeed = cityJson.wind.speed;
-        city.cloudiness = cityJson.weather[0].description;
-        city.pressure = cityJson.main.pressure;
-        city.humidity = cityJson.main.humidity;
-        city.latitude = cityJson.coord.lat;
-        city.longitude = cityJson.coord.lon;
-        city.icon = `https://openweathermap.org/img/wn/${cityJson.weather[0].icon}@4x.png`;
+        city.country = cityJson.country;
+        city.temperature = cityJson.temperature;
+        city.feelsLike = cityJson.feelsLike;
+        city.windDirection = cityJson.windDirection;
+        city.windSpeed = cityJson.windSpeed;
+        city.cloudiness = cityJson.cloudiness;
+        city.pressure = cityJson.pressure;
+        city.humidity = cityJson.humidity;
+        city.latitude = cityJson.latitude;
+        city.longitude = cityJson.longitude;
+        city.icon = cityJson.icon;
 
         return city;
-    }
-
-    static getWindDirection(deg) {
-        if (deg > 337.5) {
-            return "North";
-        }
-        if (deg > 292.5) {
-            return "North-west";
-        }
-        if (deg > 247.5) {
-            return "West";
-        }
-        if (deg > 202.5) {
-            return "South-west";
-        }
-        if (deg > 157.5) {
-            return "South";
-        }
-        if (deg > 122.5) {
-            return "South-east";
-        }
-        if (deg > 67.5) {
-            return "East";
-        }
-        if (deg > 22.5) {
-            return "North-east";
-        }
-        return "North";
     }
 }

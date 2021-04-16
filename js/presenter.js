@@ -9,7 +9,25 @@ async function createCityWindow(city, restoreFlag) {
         li.innerHTML = `<div class="loading"></div>`;
         ul.appendChild(li);
         let info = await getWeatherByCityName(city);
-        checkResponseThenUpdateCard(info, li, restoreFlag);
+        if (info !== 404) {
+            let id = `${info.name},${info.country}`;
+            if (restoreFlag === false) {
+                let response = await saveCityToFavourites(`${info.name},${info.country}`);
+                if (response.ok) {
+                    li.id = id;
+                    updateCityWindow(info);
+                } else {
+                    ul.removeChild(li);
+                    showWarning("city already in favourites");
+                }
+            } else {
+                li.id = id;
+                updateCityWindow(info);
+            }
+        } else {
+            showWarning("city doesn't exist");
+            ul.removeChild(li);
+        }
     } else {
         showWarning("no city entered");
     }
@@ -27,11 +45,11 @@ function hideWarning() {
 function updateCityWindow(city) {
     const li = document.createElement("li");
     li.classList.add("city-window")
-    let coordinates = `[${city.latitude}; ${city.longitude}]`;
-    li.id = coordinates;
+    let id = `${city.name},${city.country}`;
+    li.id = id;
     let cityWindowContent = fillCityWindowTemplate(city)
     li.appendChild(cityWindowContent)
-    const cityLoading = document.getElementById(coordinates);
+    const cityLoading = document.getElementById(id);
     ul.replaceChild(li, cityLoading);
 }
 
@@ -52,9 +70,9 @@ async function updateMainCityCard(latitude, longitude) {
     main.replaceChild(card, cardOld);
 }
 
-function removeCityWindow(obj) {
+async function removeCityWindow(obj) {
     obj.parentElement.parentElement.remove();
-    localStorage.removeItem(obj.parentElement.parentElement.id);
+    await deleteCityFromFavourites(obj.parentElement.parentElement.id);
 }
 
 function fillCityWindowTemplate(city) {
@@ -103,45 +121,4 @@ function fillValues(template, city) {
     pressure.textContent = `${city.pressure} hpa`;
     humidity.textContent = `${city.humidity}%`;
     coordinates.textContent = `[${city.latitude}; ${city.longitude}]`;
-}
-
-function isInLocalStorage(city) {
-    for (let i = 0; i < localStorage.length; i++) {
-        let value = localStorage.getItem(`[${city.latitude}; ${city.longitude}]`);
-        if (value != null) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function checkResponseThenUpdateCard(response, li, restoreFlag) {
-    if (response !== 404) {
-        restoreOrCreateCard(restoreFlag, li, response);
-    } else {
-        showWarning("city doesn't exist");
-        ul.removeChild(li);
-    }
-}
-
-function restoreOrCreateCard(restoreFlag, li, response) {
-    let coordinates = `[${response.latitude}; ${response.longitude}]`;
-
-    if (restoreFlag === false) {
-        createAccordingToLocalStorage(response, li, coordinates);
-    } else {
-        li.id = coordinates;
-        updateCityWindow(response);
-    }
-}
-
-function createAccordingToLocalStorage(response, li, coordinates) {
-    if (!isInLocalStorage(response)) {
-        li.id = coordinates;
-        localStorage.setItem(coordinates, response.name);
-        updateCityWindow(response);
-    } else {
-        ul.removeChild(li);
-        showWarning("city already in favourites");
-    }
 }
