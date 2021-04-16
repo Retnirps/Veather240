@@ -138,7 +138,7 @@ async function createCardIfNotExists(city, li, id) {
 
     if (response.ok) {
         li.id = id;
-        updateCityWindow(response);
+        updateCityWindow(city);
     } else {
         ul.removeChild(li);
         showWarning("city already in favourites");
