@@ -30,11 +30,3 @@ async function showLocation(position) {
 async function defaultLocation() {
     await updateMainCityCard(defaultLatitude, defaultLongitude);
 }
-
-function restore() {
-    getFavourites().then(favourites => {
-        for (let i = 0; i < favourites.length; i++) {
-            createCityWindow(favourites[i], true).then();
-        }
-    });
-}

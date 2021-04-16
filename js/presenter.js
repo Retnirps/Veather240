@@ -8,26 +8,8 @@ async function createCityWindow(city, restoreFlag) {
         li.classList.add("city-window");
         li.innerHTML = `<div class="loading"></div>`;
         ul.appendChild(li);
-        let info = await getWeatherByCityName(city);
-        if (info !== 404) {
-            let id = `${info.name},${info.country}`;
-            if (restoreFlag === false) {
-                let response = await saveCityToFavourites(`${info.name},${info.country}`);
-                if (response.ok) {
-                    li.id = id;
-                    updateCityWindow(info);
-                } else {
-                    ul.removeChild(li);
-                    showWarning("city already in favourites");
-                }
-            } else {
-                li.id = id;
-                updateCityWindow(info);
-            }
-        } else {
-            showWarning("city doesn't exist");
-            ul.removeChild(li);
-        }
+        let response = await getWeatherByCityName(city);
+        await checkResponseThenUpdateCard(response, li, restoreFlag);
     } else {
         showWarning("no city entered");
     }
@@ -121,4 +103,44 @@ function fillValues(template, city) {
     pressure.textContent = `${city.pressure} hpa`;
     humidity.textContent = `${city.humidity}%`;
     coordinates.textContent = `[${city.latitude}; ${city.longitude}]`;
+}
+
+function restore() {
+    getFavourites().then(favourites => {
+        for (let i = 0; i < favourites.length; i++) {
+            createCityWindow(favourites[i], true).then();
+        }
+    });
+}
+
+async function checkResponseThenUpdateCard(response, li, restoreFlag) {
+    if (response !== 404) {
+        await restoreOrCreateCard(response, li, restoreFlag);
+    } else {
+        showWarning("city doesn't exist");
+        ul.removeChild(li);
+    }
+}
+
+async function restoreOrCreateCard(city, li, restoreFlag) {
+    let id = `${city.name},${city.country}`;
+
+    if (restoreFlag === false) {
+        await createCardIfNotExists(city, li, id);
+    } else {
+        li.id = id;
+        updateCityWindow(city);
+    }
+}
+
+async function createCardIfNotExists(city, li, id) {
+    let response = await saveCityToFavourites(`${city.name},${city.country}`);
+
+    if (response.ok) {
+        li.id = id;
+        updateCityWindow(response);
+    } else {
+        ul.removeChild(li);
+        showWarning("city already in favourites");
+    }
 }
