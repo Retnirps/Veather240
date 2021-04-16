@@ -9,25 +9,7 @@ async function createCityWindow(city, restoreFlag) {
         li.innerHTML = `<div class="loading"></div>`;
         ul.appendChild(li);
         let info = await getWeatherByCityName(city);
-        if (info !== 404) {
-            let coordinates = `[${info.latitude}; ${info.longitude}]`;
-            if (restoreFlag === false) {
-                if (!isInLocalStorage(info)) {
-                    li.id = coordinates;
-                    localStorage.setItem(coordinates, info.name);
-                    updateCityWindow(info);
-                } else {
-                    ul.removeChild(li);
-                    showWarning("city already in favourites");
-                }
-            } else {
-                li.id = coordinates;
-                updateCityWindow(info);
-            }
-        } else {
-            showWarning("city doesn't exist");
-            ul.removeChild(li);
-        }
+        checkResponseAndUpdateCard(info, li, restoreFlag);
     } else {
         showWarning("no city entered");
     }
@@ -131,4 +113,35 @@ function isInLocalStorage(city) {
         }
     }
     return false;
+}
+
+function checkResponseAndUpdateCard(response, li, restoreFlag) {
+    if (response !== 404) {
+        restoreOrCreateCard(restoreFlag, li, response);
+    } else {
+        showWarning("city doesn't exist");
+        ul.removeChild(li);
+    }
+}
+
+function restoreOrCreateCard(restoreFlag, li, response) {
+    let coordinates = `[${response.latitude}; ${response.longitude}]`;
+
+    if (restoreFlag === false) {
+        createAccordingToLocalStorage(response, li, coordinates);
+    } else {
+        li.id = coordinates;
+        updateCityWindow(response);
+    }
+}
+
+function createAccordingToLocalStorage(response, li, coordinates) {
+    if (!isInLocalStorage(response)) {
+        li.id = coordinates;
+        localStorage.setItem(coordinates, response.name);
+        updateCityWindow(response);
+    } else {
+        ul.removeChild(li);
+        showWarning("city already in favourites");
+    }
 }

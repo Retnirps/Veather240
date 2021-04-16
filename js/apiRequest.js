@@ -20,6 +20,6 @@ async function getWeatherByCoordinates(latitude, longitude) {
         let json = await response.json();
         return City.buildModelFromJson(json);
     } else {
-        alert("Error " + response.status);
+        return response.status;
     }
 }

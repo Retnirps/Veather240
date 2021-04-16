@@ -12,7 +12,7 @@ form.addEventListener("submit", e => {
 
 window.onload = function() {
     getLocation();
-    restore();
+    restore().then();
 }
 
 function getLocation() {
@@ -31,10 +31,10 @@ async function defaultLocation() {
     await updateMainCityCard(defaultLatitude, defaultLongitude);
 }
 
-function restore() {
+async function restore() {
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);
         let name = localStorage.getItem(key);
-        createCityWindow(name, true).then();
+        await createCityWindow(name, true);
     }
 }
