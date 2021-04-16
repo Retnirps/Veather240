@@ -33,7 +33,7 @@ async function saveCityToFavourites(fullCityName) {
 async function deleteCityFromFavourites(fullCityName) {
     const url = `https://pure-caverns-60689.herokuapp.com/weather/favourites?city=${fullCityName}`;
 
-    let response = await fetch(url, {
+    return await fetch(url, {
         method: "DELETE"
     });
 }
