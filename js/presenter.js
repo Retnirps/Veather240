@@ -9,7 +9,7 @@ async function createCityWindow(city, restoreFlag) {
         li.innerHTML = `<div class="loading"></div>`;
         ul.appendChild(li);
         let info = await getWeatherByCityName(city);
-        checkResponseAndUpdateCard(info, li, restoreFlag);
+        checkResponseThenUpdateCard(info, li, restoreFlag);
     } else {
         showWarning("no city entered");
     }
@@ -115,7 +115,7 @@ function isInLocalStorage(city) {
     return false;
 }
 
-function checkResponseAndUpdateCard(response, li, restoreFlag) {
+function checkResponseThenUpdateCard(response, li, restoreFlag) {
     if (response !== 404) {
         restoreOrCreateCard(restoreFlag, li, response);
     } else {
