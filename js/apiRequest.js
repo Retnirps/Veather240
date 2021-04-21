@@ -25,17 +25,21 @@ async function getWeatherByCoordinates(latitude, longitude) {
 async function saveCityToFavourites(fullCityName) {
     const url = `https://pure-caverns-60689.herokuapp.com/weather/favourites?city=${fullCityName}`;
 
-    return await fetch(url, {
+    let response = await fetch(url, {
         method: "POST"
     });
+
+    return response.status;
 }
 
 async function deleteCityFromFavourites(fullCityName) {
     const url = `https://pure-caverns-60689.herokuapp.com/weather/favourites?city=${fullCityName}`;
 
-    return await fetch(url, {
+    let response = await fetch(url, {
         method: "DELETE"
     });
+
+    return response.status;
 }
 
 async function getFavourites() {

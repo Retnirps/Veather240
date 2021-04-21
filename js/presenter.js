@@ -3,15 +3,15 @@ const main = document.querySelector("main");
 const warning = document.querySelector(".warning");
 
 async function createCityWindow(city, restoreFlag) {
-    if (city.length !== 0) {
+    if (city.length === 0) {
+        showWarning("no city entered");
+    } else {
         const li = document.createElement("li");
         li.classList.add("city-window");
         li.innerHTML = `<div class="loading"></div>`;
         ul.appendChild(li);
         let response = await getWeatherByCityName(city);
         await checkResponseThenUpdateCard(response, li, restoreFlag);
-    } else {
-        showWarning("no city entered");
     }
 }
 
@@ -54,7 +54,11 @@ async function updateMainCityCard(latitude, longitude) {
 
 async function removeCityWindow(obj) {
     obj.parentElement.parentElement.remove();
-    await deleteCityFromFavourites(obj.parentElement.parentElement.id);
+    let response = await deleteCityFromFavourites(obj.parentElement.parentElement.id);
+
+    if (response !== 200) {
+        alert("Server Error");
+    }
 }
 
 function fillCityWindowTemplate(city) {
@@ -114,11 +118,11 @@ function restore() {
 }
 
 async function checkResponseThenUpdateCard(response, li, restoreFlag) {
-    if (response !== 404) {
-        await restoreOrCreateCard(response, li, restoreFlag);
-    } else {
+    if (response === 404) {
         showWarning("city doesn't exist");
         ul.removeChild(li);
+    } else {
+        await restoreOrCreateCard(response, li, restoreFlag);
     }
 }
 
@@ -136,11 +140,15 @@ async function restoreOrCreateCard(city, li, restoreFlag) {
 async function createCardIfNotExists(city, li, id) {
     let response = await saveCityToFavourites(`${city.name},${city.country}`);
 
-    if (response.ok) {
-        li.id = id;
-        updateCityWindow(city);
-    } else {
+    if (response === 500) {
+        alert("Server Error");
+    }
+
+    if (response === 400) {
         ul.removeChild(li);
         showWarning("city already in favourites");
+    } else {
+        li.id = id;
+        updateCityWindow(city);
     }
 }
