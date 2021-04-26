@@ -1,5 +1,5 @@
 async function getWeatherByCityName(city) {
-    let url = `https://pure-caverns-60689.herokuapp.com/weather/city?q=${city}`;
+    let url = `https://veather240.herokuapp.com/weather/city?q=${city}`;
 
     let response = await fetch(url);
     if (response.ok) {
@@ -11,7 +11,7 @@ async function getWeatherByCityName(city) {
 }
 
 async function getWeatherByCoordinates(latitude, longitude) {
-    let url = `https://pure-caverns-60689.herokuapp.com/weather/coordinates?lat=${latitude}&lon=${longitude}`;
+    let url = `https://veather240.herokuapp.com/weather/coordinates?lat=${latitude}&lon=${longitude}`;
 
     let response = await fetch(url);
     if (response.ok) {
@@ -23,7 +23,7 @@ async function getWeatherByCoordinates(latitude, longitude) {
 }
 
 async function saveCityToFavourites(fullCityName) {
-    const url = `https://pure-caverns-60689.herokuapp.com/favourites?city=${fullCityName}`;
+    const url = `https://veather240.herokuapp.com/favourites?city=${fullCityName}`;
 
     let response = await fetch(url, {
         method: "POST"
@@ -33,7 +33,7 @@ async function saveCityToFavourites(fullCityName) {
 }
 
 async function deleteCityFromFavourites(fullCityName) {
-    const url = `https://pure-caverns-60689.herokuapp.com/favourites?city=${fullCityName}`;
+    const url = `https://veather240.herokuapp.com/favourites?city=${fullCityName}`;
 
     let response = await fetch(url, {
         method: "DELETE"
@@ -43,7 +43,7 @@ async function deleteCityFromFavourites(fullCityName) {
 }
 
 async function getFavourites() {
-    const url = `https://pure-caverns-60689.herokuapp.com/favourites`;
+    const url = `https://veather240.herokuapp.com/favourites`;
     const favourites = [];
 
     let response = await fetch(url);
